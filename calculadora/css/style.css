@@ -1,0 +1,89 @@
+.conteiner{
+	width: 850px;
+	margin: auto;
+	margin-top: 100px;
+	padding: 10px;
+}
+
+.files_row{
+	width: 50px;
+}
+
+.files_numbers{
+	width: 80px;
+    text-align: center;
+}
+
+.file_text{
+	width: 260px;
+}
+
+.file_num{
+	width: 120px;
+    text-align: center;
+}
+
+.panel_table{
+	overflow-y: scroll;
+	height: 300px;
+    border: 1px solid #ddd;
+    width: 820px;
+    margin: auto;
+}
+
+.panel_extras{
+	padding: 16px;
+}
+
+.file_extra1{
+	width:90px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.file_extra2{
+	width: 80px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+table{
+	margin-top: -10px;
+}
+
+.file_totales{
+	text-align: center;
+}
+
+.files_W{
+	text-align: center;
+}
+
+.content_Horas{
+	width: 230px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+h5{
+	padding-left: 16px;
+    padding-top: 16px;
+}
+
+th{
+	text-align: center;
+}
+
+.colchon{
+	margin-left: 10px;
+}
+
+.panel_costos{
+	border-bottom: 1px solid #ddd;
+    width: 820px;
+    margin: auto;
+}
+
+.row_W{
+	margin-top: 15px;
+}
