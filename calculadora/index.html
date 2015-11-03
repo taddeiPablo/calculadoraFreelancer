@@ -4,6 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script type="text/javascript" src="angular-1.4.7/angular.js"></script>
+    <script type="text/javascript" src="js/calculos.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</head>
 	<body ng-controller="mainCtrl">
@@ -26,13 +27,13 @@
 			<div class="conteiner">
 				<div class="panel panel-primary">
   					<div class="panel-heading">Calculadora Freelancer</div>
-  						<div class="panel-body">
+  						<div class="panel-body panel_valorHoras">
                 <div class="content_Horas">
                     <label>Valor Horas : $</label>
-                    <input type="text" ng-model="ValorHoras" class="files_numbers"/>
+                    <input type="text" ng-model="ValorHoras" class="files_numbers" required/>
                 </div>
   						</div>
-              <h5><label>Tabla de tareas</label></h5>
+              <h5><label>Listado de Tareas</label></h5>
   						<div class="panel-body panel_table">
   							<table class="table table-bordered grid">
     							<thead>
@@ -41,8 +42,8 @@
                         <th><input type="text" placeholder="Cantidad Horas" ng-model="cantHoras" class="files_numbers"/></th>
                         <th><input type="text" placeholder="Valor Horas" ng-model="ValorHoras" class="files_numbers" /></th>
                         <th>
-                          <input type="button" value="add" ng-click="add_calculadora()" />
-                          <input type="button" value="clear" ng-click="">
+                          <input type="button" value="add" ng-click="add_calculadora()" class="btn btn-primary btn-xs" />
+                          <input type="button" value="clear" ng-click="clear_calc()" class="btn btn-primary btn-xs">
                         </th>
                     </tr>
     								<tr class="active">
@@ -53,32 +54,41 @@
         						</tr>
     							</thead>
     							<tbody ng-repeat ="item in itemList">
-    								    <th><strong>{{item.tarea}}</strong></th>
-    								    <th><strong>{{item.cantH}}</strong></th>
-    									<th><strong>{{item.Vhoras}}</strong></th>
-    									<th><strong>$ {{item.costo}}</strong></th>
+                      <tr class="success">
+                          <th><strong>{{item.tarea}}</strong></th>
+                          <th><strong>{{item.cantH}}</strong></th>
+                          <th><strong>{{item.Vhoras}}</strong></th>
+                          <th><strong>$ {{item.costo}}</strong></th>
+                      </tr>
     							</tbody>
 							  </table>
   						</div>
 
   						<div class="panel-body panel_costos">
   							<div class="row panel_extras">
-  								<label>Otros Costos :</label>
-  								<input type="text" placeholder="costos" class="file_extra1" />
-  								<label class="colchon">Colchon por pedidos extras :</label>
-  								<input type="text" placeholder="extras" class="file_extra2"/>
+                  <div class="col-md-4">
+                    <a href="#" data-toggle="tooltip" title="normalmente costos de licencias, software, servidores, imágenes, templates, etc.!" data-placement="top">Otros Costos :</a>
+                    <!--<label>Otros Costos :</label>-->
+                    <input type="text" placeholder="costos" class="file_extra1" ng-model="otrosCosto"/>
+                  </div>
+                  <div class="col-md-4 file_totales">
+                    <a href="#" data-toggle="tooltip" title="Este es un porcentaje que debemos calcular por potenciales extras que pida el cliente que no estaban definidos en el presupuesto inicial. Recomendamos nunca menor a 15%. Esta línea no se incluirá si lo envias como propuesta, lo incluiremos dentro del valor hora final.!" data-placement="top">Extras en % :</a>
+                    <!--<label class="colchon">pedidos extras:</label>-->
+                    <input type="text" placeholder="extras" class="file_extra2" ng-model="porcentaje"/>
+                  </div>
+                  <div class="col-md-4 file_totales file_t"><strong>$ {{total_costos_procentaje | number:0}}</strong></div>
 							  </div>
   						</div>
 
   						<div class="panel-body">
-  							<div class="row">
+  							<div class="row row_C">
   								<div class="col-md-4"><label>Totales</label></div>
   								<div class="col-md-4 file_totales"><label>total horas : {{totalHoras}}</label></div>
-  								<div class="col-md-4 file_totales"> $ {{totales}}</div>
+  								<div class="col-md-4 file_totales file_t"><strong>$ {{total_suma | number:0}}</strong></div>
 							  </div>
 							  <div class="row row_W">
-  								<div class="col-md-8"><label>Total incluyendo la comision de Workona</label></div>
-  								<div class="col-md-4 files_W"> $ {{totales}}</div>
+  								<div class="col-md-8"><label>Total incluyendo la comision de Workana</label></div>
+  								<div class="col-md-4 files_W file_t"><strong>$ {{totales | number:0}}</strong></div>
 							  </div>
   						</div>
 				</div>
