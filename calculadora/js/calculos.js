@@ -1,5 +1,14 @@
+/**
+ *	==================================================
+ *	MODULO CREADO PARA LA REALIZACION DE LOS CALCULOS,
+ *	NECESARIOS PARA ESTA APLICACION
+ *	==================================================
+**/
+
 var calc = angular.module('Calc', []);
 
+//construcion de un factory
+//para el manejo de los calculos
 calc.factory('$calculos', function($q){
 	var calc = {};
 	var deferred = undefined;

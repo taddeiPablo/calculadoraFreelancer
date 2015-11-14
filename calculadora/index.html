@@ -3,7 +3,10 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script type="text/javascript" src="angular-1.4.7/angular.js"></script>
+    <script type="text/javascript" src="js/jspdf.min.js"></script>
+    <script src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
     <script type="text/javascript" src="js/calculos.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</head>
@@ -23,9 +26,9 @@
 				</div>
 			</nav>
 		</header>
-		<div class="container-fluid">
+		<div id = "main" class="container-fluid" data-ng-init="load_data()">
 			<div class="conteiner">
-				<div class="panel panel-primary">
+				<div id="content-main" class="panel panel-primary">
   					<div class="panel-heading">Calculadora Freelancer</div>
   						<div class="panel-body panel_valorHoras">
                 <div class="content_Horas">
@@ -33,11 +36,12 @@
                     <input type="text" ng-model="ValorHoras" class="files_numbers" required/>
                 </div>
   						</div>
-              <h5><label>Listado de Tareas</label></h5>
-  						<div class="panel-body panel_table">
-  							<table class="table table-bordered grid">
-    							<thead>
-                    <tr class="active">
+              <div id="div-main">
+                <h5><label>Listado de Tareas</label></h5>
+                <div id="div_table" class="panel-body panel_table">
+                  <table id="table" class="table table-bordered grid">
+                    <thead>
+                      <tr id="panel" class="active">
                         <th><input type="text" placeholder="Tareas" ng-model="tarea" class="file_text" /></th>
                         <th><input type="text" placeholder="Cantidad Horas" ng-model="cantHoras" class="files_numbers"/></th>
                         <th><input type="text" placeholder="Valor Horas" ng-model="ValorHoras" class="files_numbers" /></th>
@@ -45,52 +49,56 @@
                           <input type="button" value="add" ng-click="add_calculadora()" class="btn btn-primary btn-xs" />
                           <input type="button" value="clear" ng-click="clear_calc()" class="btn btn-primary btn-xs">
                         </th>
-                    </tr>
-    								<tr class="active">
-            							<th data-field="Tareas">Tareas</th>
-            							<th data-field="Cantidad horas">Cantidad Horas</th>
-            							<th data-field="Valor Horas">Valor Horas</th>
-            							<th data-field="Costos">Costos</th>
-        						</tr>
-    							</thead>
-    							<tbody ng-repeat ="item in itemList">
-                      <tr class="success">
-                          <th><strong>{{item.tarea}}</strong></th>
-                          <th><strong>{{item.cantH}}</strong></th>
-                          <th><strong>{{item.Vhoras}}</strong></th>
-                          <th><strong>$ {{item.costo}}</strong></th>
                       </tr>
-    							</tbody>
-							  </table>
-  						</div>
-
-  						<div class="panel-body panel_costos">
-  							<div class="row panel_extras">
-                  <div class="col-md-4">
-                    <a href="#" data-toggle="tooltip" title="normalmente costos de licencias, software, servidores, imágenes, templates, etc.!" data-placement="top">Otros Costos :</a>
-                    <!--<label>Otros Costos :</label>-->
-                    <input type="text" placeholder="costos" class="file_extra1" ng-model="otrosCosto"/>
+                      <tr role="row" class="active">
+                          <th role="columnheader1" data-field="Tareas">Tareas</th>
+                          <th role="columnheader2" data-field="Cantidad horas">Cantidad Horas</th>
+                          <th role="columnheader3" data-field="Valor Horas">Valor Horas</th>
+                          <th role="columnheader4" data-field="Costos">Costos</th>
+                      </tr>
+                    </thead>
+                    <tbody ng-repeat ="item in itemList">
+                      <tr role="row" class="success">
+                          <th role="columnheader"><strong>{{item.tarea}}</strong></th>
+                          <th role="columnheader"><strong>{{item.cantH}}</strong></th>
+                          <th role="columnheader"><strong>{{item.Vhoras}}</strong></th>
+                          <th role="columnheader"><strong>$ {{item.costo}}</strong></th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="costos" class="panel-body panel_costos">
+                  <div class="row panel_extras">
+                    <div class="col-md-4">
+                      <a href="#" data-toggle="tooltip" title="normalmente costos de licencias, software, servidores, imágenes, templates, etc.!" data-placement="top">Otros Costos :</a>
+                      <input id="costoID" type="text" placeholder="costos" class="file_extra1" ng-model="otrosCosto"/>
+                    </div>
+                    <div class="col-md-4 file_totales">
+                      <a href="#" data-toggle="tooltip" title="Este es un porcentaje que debemos calcular por potenciales extras que pida el cliente que no estaban definidos en el presupuesto inicial. Recomendamos nunca menor a 15%. Esta línea no se incluirá si lo envias como propuesta, lo incluiremos dentro del valor hora final.!" data-placement="top">Extras en % :</a>
+                      <input type="text" placeholder="extras" class="file_extra2" ng-model="porcentaje"/>
+                    </div>
+                    <div class="col-md-4 file_totales file_t"><strong id="tcost">$ {{total_costos_procentaje | number:0}}</strong></div>
                   </div>
-                  <div class="col-md-4 file_totales">
-                    <a href="#" data-toggle="tooltip" title="Este es un porcentaje que debemos calcular por potenciales extras que pida el cliente que no estaban definidos en el presupuesto inicial. Recomendamos nunca menor a 15%. Esta línea no se incluirá si lo envias como propuesta, lo incluiremos dentro del valor hora final.!" data-placement="top">Extras en % :</a>
-                    <!--<label class="colchon">pedidos extras:</label>-->
-                    <input type="text" placeholder="extras" class="file_extra2" ng-model="porcentaje"/>
+                </div>
+                <div id="total" class="panel-body">
+                  <div class="row row_C">
+                    <div class="col-md-4"><label>Totales</label></div>
+                    <div class="col-md-4 file_totales"><label id="thoras">total horas : {{totalHoras}}</label></div>
+                    <div class="col-md-4 file_totales file_t"><strong id="tsuma">$ {{total_suma | number:0}}</strong></div>
                   </div>
-                  <div class="col-md-4 file_totales file_t"><strong>$ {{total_costos_procentaje | number:0}}</strong></div>
-							  </div>
-  						</div>
-
-  						<div class="panel-body">
-  							<div class="row row_C">
-  								<div class="col-md-4"><label>Totales</label></div>
-  								<div class="col-md-4 file_totales"><label>total horas : {{totalHoras}}</label></div>
-  								<div class="col-md-4 file_totales file_t"><strong>$ {{total_suma | number:0}}</strong></div>
-							  </div>
-							  <div class="row row_W">
-  								<div class="col-md-8"><label>Total incluyendo la comision de Workana</label></div>
-  								<div class="col-md-4 files_W file_t"><strong>$ {{totales | number:0}}</strong></div>
-							  </div>
-  						</div>
+                  <div class="row row_W">
+                    <div class="col-md-8"><label>Total incluyendo la comision de Workana :</label></div>
+                    <div class="col-md-4 files_W file_t"><strong id="twork" class="total_workana">$ {{totales | number:0}}</strong></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div id="export">
+                  <div class="col-md-8"><label>Exportar a formato pdf</label></div>
+                  <div class="col-md-4 files_W file_t"><input type="button" value="Export" ng-click="export_pdf()" class="btn btn-primary btn-xs"></div>
+                </div>
+                <div id="editor" style="display:none"></div>
+              </div>
 				</div>
 			</div>
 		</div>
