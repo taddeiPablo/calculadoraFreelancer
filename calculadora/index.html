@@ -33,7 +33,7 @@
   						<div class="panel-body panel_valorHoras">
                 <div class="content_Horas">
                     <label>Valor Horas : $</label>
-                    <input type="text" ng-model="ValorHoras" class="files_numbers" required/>
+                    <input type="text" id="horas" ng-model="ValorHoras" class="files_numbers" required/>
                 </div>
   						</div>
               <div id="div-main">
@@ -42,11 +42,11 @@
                   <table id="table" class="table table-bordered grid">
                     <thead>
                       <tr id="panel" class="active">
-                        <th><input type="text" placeholder="Tareas" ng-model="tarea" class="file_text" /></th>
-                        <th><input type="text" placeholder="Cantidad Horas" ng-model="cantHoras" class="files_numbers"/></th>
-                        <th><input type="text" placeholder="Valor Horas" ng-model="ValorHoras" class="files_numbers" /></th>
+                        <th><input type="text" placeholder="Tareas" id="tarea" ng-model="tarea" class="file_text" /></th>
+                        <th><input type="text" placeholder="Cantidad Horas" id="Canthoras" ng-model="cantHoras" class="files_numbers"/></th>
+                        <th><input type="text" placeholder="Valor Horas" id="VHoras" ng-model="ValorHoras" class="files_numbers" /></th>
                         <th>
-                          <input type="button" value="add" ng-click="add_calculadora()" class="btn btn-primary btn-xs" />
+                          <input type="button" id="calcular" value="add" ng-click="add_calculadora()" class="btn btn-primary btn-xs" />
                           <input type="button" value="clear" ng-click="clear_calc()" class="btn btn-primary btn-xs">
                         </th>
                       </tr>
